@@ -22,3 +22,7 @@ created by lvxin for project baseutil at 19-2-22 下午3:32
 func TestPrintFullStack(t *testing.T) {
 	PrintRuntimeFullStack()
 }
+
+func TestPrintStack(t *testing.T) {
+	PrintRuntimeStack(0)
+}

@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 	"errors"
+	"github.com/lvxin1986/baseutil/runtime/stack"
 )
 
 /*
@@ -43,4 +44,20 @@ func GetCurrentPath() (string, error) {
 		return "", errors.New(`error: Can't find "/" or "\".`)
 	}
 	return string(path[0 : i+1]), nil
+}
+
+func PathExist(p string) bool {
+	_, err := os.Stat(p)
+	if err != nil && os.IsNotExist(err) {
+		return false
+	}
+	return true
+}
+
+func GetCurrentSourceCodePath() (fileName string, err error){
+	_, fileName, _, ok := stack.CallerName(2)
+	if !ok {
+		err = errors.New("Can not get the current source code path!")
+	}
+	return fileName,err
 }

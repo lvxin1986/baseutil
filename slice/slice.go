@@ -1,8 +1,4 @@
-package os
-
-import (
-	"testing"
-)
+package slice
 
 /*
 Copyright 2019 Tiglabs
@@ -19,23 +15,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-created by lvxin for project baseutil at 19-2-22 下午3:42
+created by lvxin for project baseutil at 19-2-22 下午4:51
 */
+type FilterFunc func(element string) bool
 
-func TestGetCurrentPath(t *testing.T) {
-	if curPath,err := GetCurrentPath(); err!=nil {
-		t.Error("error:",err)
-	} else {
-		t.Log("SUCCESS! The Current Path is:",curPath)
+func GetFirstNotNullElement(slice []string,f FilterFunc) string{
+	for _, value := range slice {
+		if f(value) == true{
+			return value
+		}
 	}
-
-}
-
-func  TestGetCurrentSourceCodePath(t *testing.T) {
-	if fileName,err := GetCurrentSourceCodePath(); nil != err {
-		t.Error("error:",err)
-	} else {
-		t.Log("SUCCESS! The Source Code  Path is:",fileName)
-	}
-
+	return ""
 }

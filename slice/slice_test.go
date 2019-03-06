@@ -1,7 +1,8 @@
-package os
+package slice
 
 import (
 	"testing"
+	"github.com/lvxin1986/baseutil/runtime/os"
 )
 
 /*
@@ -22,20 +23,12 @@ limitations under the License.
 created by lvxin for project baseutil at 19-2-22 下午3:42
 */
 
-func TestGetCurrentPath(t *testing.T) {
-	if curPath,err := GetCurrentPath(); err!=nil {
-		t.Error("error:",err)
+func TestGetFirstNotNullElement(t *testing.T) {
+	sli := [] string  {"","aaa","bbb",""}
+	if e:= GetFirstNotNullElement(sli,os.PathExist); e =="" {
+		t.Error("error: can not find the first not null element")
 	} else {
-		t.Log("SUCCESS! The Current Path is:",curPath)
-	}
-
-}
-
-func  TestGetCurrentSourceCodePath(t *testing.T) {
-	if fileName,err := GetCurrentSourceCodePath(); nil != err {
-		t.Error("error:",err)
-	} else {
-		t.Log("SUCCESS! The Source Code  Path is:",fileName)
+		t.Log("SUCCESS! the first not null element is:",e)
 	}
 
 }
