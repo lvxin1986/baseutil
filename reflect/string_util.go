@@ -2,6 +2,7 @@ package reflect
 
 import (
 	"fmt"
+	"github.com/spf13/cast"
 	"reflect"
 )
 
@@ -63,13 +64,14 @@ func PtrToString(prefix string, i interface{}) (str string) {
 	return returnStr
 }
 
-func ToString(prefix string, u interface{}) (str string) {
-	t := reflect.TypeOf(u)
-	returnStr := ""
+func ToString(prefix string, i interface{}) (returnStr string) {
+	t := reflect.TypeOf(i)
 	if t.Kind() == reflect.Ptr {
-		returnStr = PtrToString(prefix, u)
+		returnStr = PtrToString(prefix, i)
 	} else if t.Kind() == reflect.Struct {
-		returnStr = StructToString(prefix, u)
+		returnStr = StructToString(prefix, i)
+	} else {
+		returnStr = fmt.Sprintf("%s = %s", prefix, cast.ToString(i))
 	}
-	return returnStr
+	return
 }

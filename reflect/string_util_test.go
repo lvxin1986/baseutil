@@ -35,7 +35,7 @@ type Address struct {
 }
 
 func TestToString(t *testing.T) {
-	u := User{Id: 1001, Name: "aaa", Address: &Address{Add: "ccccccccc", Res: 12}}
-	fmt.Print(ToString("u", u))
+	//u := User{Id: 1001, Name: "aaa", Address: &Address{Add: "ccccccccc", Res: 12}}
+	fmt.Print(ToString("u", "test"))
 
 }
