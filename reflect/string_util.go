@@ -2,8 +2,9 @@ package reflect
 
 import (
 	"fmt"
-	"github.com/spf13/cast"
 	"reflect"
+
+	"github.com/spf13/cast"
 )
 
 // Copyright 2019 The ChuBao Authors.
@@ -27,15 +28,17 @@ func StructToString(prefix string, u interface{}) (str string) {
 	v := reflect.ValueOf(u)
 	returnStr := ""
 	for i := 0; i < v.NumField(); i++ {
+		fmt.Println(t.Field(i).Name, ":", t.Field(i).Type.Kind())
 		if v.Field(i).CanInterface() { //判断是否为可导出字段
 			//判断是否是嵌套结构
-			if v.Field(i).Type().Kind() == reflect.Struct {
+			switch v.Field(i).Type().Kind() {
+			case reflect.Struct:
 				returnStr = returnStr + StructToString(prefix+"."+t.Field(i).Name+"", v.Field(i).Interface())
-				continue
-			} else if v.Field(i).Type().Kind() == reflect.Ptr {
+			case reflect.Ptr:
 				returnStr = returnStr + PtrToString(prefix+"."+t.Field(i).Name+"", v.Field(i).Interface())
-				continue
-			} else {
+			case reflect.Slice, reflect.Array:
+				returnStr = returnStr + SliceToString(prefix+"."+t.Field(i).Name+"", v.Field(i).Interface())
+			default:
 				returnStr = returnStr + fmt.Sprintf("%s.%s = %v \n", prefix, t.Field(i).Name, v.Field(i).Interface())
 			}
 		}
@@ -59,13 +62,14 @@ func PtrToString(prefix string, i interface{}) (str string) {
 	for i := 0; i < v.Elem().NumField(); i++ {
 		if v.Elem().Field(i).CanInterface() { //判断是否为可导出字段
 			//判断是否是嵌套结构
-			if v.Elem().Field(i).Type().Kind() == reflect.Struct {
+			switch v.Elem().Field(i).Type().Kind() {
+			case reflect.Struct:
 				returnStr = returnStr + StructToString(prefix+"."+t.Elem().Field(i).Name+"", v.Elem().Field(i).Interface())
-				continue
-			} else if v.Elem().Field(i).Type().Kind() == reflect.Ptr {
+			case reflect.Ptr:
 				returnStr = returnStr + PtrToString(prefix+"."+t.Elem().Field(i).Name+"", v.Elem().Field(i).Interface())
-				continue
-			} else {
+			case reflect.Slice, reflect.Array:
+				returnStr = returnStr + SliceToString(prefix+"."+t.Elem().Field(i).Name+"", v.Elem().Field(i).Interface())
+			default:
 				returnStr = returnStr + fmt.Sprintf("%s.%s = %v \n", prefix, t.Elem().Field(i).Name, v.Elem().Field(i).Interface())
 			}
 		}
