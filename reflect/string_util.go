@@ -43,6 +43,15 @@ func StructToString(prefix string, u interface{}) (str string) {
 	return returnStr
 }
 
+func SliceToString(prefix string, u interface{}) (str string) {
+	v := reflect.ValueOf(u)
+	returnStr := ""
+	for i := 0; i < v.Len(); i++ {
+		returnStr = returnStr + ToString(prefix+"["+cast.ToString(i)+"]", v.Index(i).Interface())
+	}
+	return returnStr
+}
+
 func PtrToString(prefix string, i interface{}) (str string) {
 	t := reflect.TypeOf(i)
 	v := reflect.ValueOf(i)
@@ -66,12 +75,15 @@ func PtrToString(prefix string, i interface{}) (str string) {
 
 func ToString(prefix string, i interface{}) (returnStr string) {
 	t := reflect.TypeOf(i)
-	if t.Kind() == reflect.Ptr {
+	switch t.Kind() {
+	case reflect.Ptr:
 		returnStr = PtrToString(prefix, i)
-	} else if t.Kind() == reflect.Struct {
+	case reflect.Struct:
 		returnStr = StructToString(prefix, i)
-	} else {
-		returnStr = fmt.Sprintf("%s = %s", prefix, cast.ToString(i))
+	case reflect.Slice, reflect.Array:
+		returnStr = SliceToString(prefix, i)
+	default:
+		returnStr = fmt.Sprintf("%s = %s\n", prefix, cast.ToString(i))
 	}
 	return
 }
