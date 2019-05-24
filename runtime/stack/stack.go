@@ -18,8 +18,8 @@ created by lvxin for project golang-test at 19-2-22 下午12:21
 package stack
 
 import (
-	"runtime"
 	"fmt"
+	"runtime"
 )
 
 func CallerName(skip int) (funcName, file string, line int, ok bool) {
@@ -37,11 +37,11 @@ func PrintRuntimeStack(initSkip int) {
 		if !ok {
 			break
 		}
-		fmt.Printf("  file = %v, line = %d,function name = %v \n", file, line,funcName)
+		fmt.Printf("  file = %v, line = %d,function name = %v \n", file, line, funcName)
 	}
 }
 
 func PrintRuntimeFullStack() {
-	initSkip:=2
+	initSkip := 3
 	PrintRuntimeStack(initSkip)
 }
